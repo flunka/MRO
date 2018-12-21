@@ -12,6 +12,7 @@
 #define RANDOM 3
 #define JARVIS 4
 #define STUCKI 5
+#define ATKINSON 6
 
 
 using namespace std;
@@ -23,6 +24,7 @@ void random(int rows, int cols, unsigned char **a);
 void dithering(string image_pgm, int type);
 void jarvis_judice_ninke(int rows, int cols, unsigned char **a);
 void stucki(int rows, int cols, unsigned char **a);
+void atkinson(int rows, int cols, unsigned char **a);
 
 int main(int argc, char **argv)
 { 
@@ -32,6 +34,7 @@ int main(int argc, char **argv)
   dithering("x.pgm", RANDOM);
   dithering("x.pgm", JARVIS);
   dithering("x.pgm", STUCKI);
+  dithering("x.pgm", ATKINSON);
     
     return 0;
 }
@@ -72,7 +75,11 @@ void dithering(string image_pgm, int type){
       break;
     case STUCKI:
       stucki(rows, cols, a);
-      method = "stucki.pgm";
+      method = "_stucki.pgm";
+      break;
+    case ATKINSON:
+      atkinson(rows, cols, a);
+      method = "_atkinson.pgm";
       break;
   }
   
@@ -184,6 +191,27 @@ void stucki(int rows, int cols, unsigned char **a){
       a[i+2][j+2] = a[i+2][j+2] + quant_error * w[3];
       
 
+    }
+  }
+}
+
+void atkinson(int rows, int cols, unsigned char **a){
+  int i,j;
+  int old_pixel, new_pixel;
+  int quant_error;
+  float w = 1.0 / 8;
+  for (i=0; i< rows-2; i++){
+    for (j=1; j< cols-2; j++){
+      old_pixel = a[i][j];
+      new_pixel = (a[i][j] > 128 ) ?  255 : 0;
+      a[i][j] = new_pixel;
+      quant_error = old_pixel - new_pixel;
+      a[ i ][j+1] = a[ i ][j+1] + quant_error * w;
+      a[ i ][j+2] = a[ i ][j+2] + quant_error * w;
+      a[i+1][j-1] = a[i+1][j-1] + quant_error * w;
+      a[i+1][ j ] = a[i+1][ j ] + quant_error * w;
+      a[i+1][j+1] = a[i+1][j+1] + quant_error * w;
+      a[i+2][ j ] = a[i+2][ j ] + quant_error * w;
     }
   }
 }
