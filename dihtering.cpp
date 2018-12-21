@@ -13,6 +13,7 @@
 #define JARVIS 4
 #define STUCKI 5
 #define ATKINSON 6
+#define BURKES 7
 
 
 using namespace std;
@@ -25,16 +26,19 @@ void dithering(string image_pgm, int type);
 void jarvis_judice_ninke(int rows, int cols, unsigned char **a);
 void stucki(int rows, int cols, unsigned char **a);
 void atkinson(int rows, int cols, unsigned char **a);
+void burkes(int rows, int cols, unsigned char **a);
 
 int main(int argc, char **argv)
 { 
-  display_image("x.pgm");     
-  dithering("x.pgm", FLOYD);
-  dithering("x.pgm", THRESHOLD);
-  dithering("x.pgm", RANDOM);
-  dithering("x.pgm", JARVIS);
-  dithering("x.pgm", STUCKI);
-  dithering("x.pgm", ATKINSON);
+  string file = "x.pgm";
+  display_image(file);     
+  dithering(file, FLOYD);
+  dithering(file, THRESHOLD);
+  dithering(file, RANDOM);
+  dithering(file, JARVIS);
+  dithering(file, STUCKI);
+  dithering(file, ATKINSON);
+  dithering(file, BURKES);
     
     return 0;
 }
@@ -80,6 +84,10 @@ void dithering(string image_pgm, int type){
     case ATKINSON:
       atkinson(rows, cols, a);
       method = "_atkinson.pgm";
+      break;
+    case BURKES:
+      burkes(rows, cols, a);
+      method = "_burkes.pgm";
       break;
   }
   
@@ -212,6 +220,28 @@ void atkinson(int rows, int cols, unsigned char **a){
       a[i+1][ j ] = a[i+1][ j ] + quant_error * w;
       a[i+1][j+1] = a[i+1][j+1] + quant_error * w;
       a[i+2][ j ] = a[i+2][ j ] + quant_error * w;
+    }
+  }
+}
+
+void burkes(int rows, int cols, unsigned char **a){
+  int i,j;
+  int old_pixel, new_pixel;
+  int quant_error;
+  float w[] = {8.0 / 32.0, 4.0 / 32.0, 2.0 / 32.0};
+  for (i=0; i< rows-1; i++){
+    for (j=2; j< cols-2; j++){
+      old_pixel = a[i][j];
+      new_pixel = (a[i][j] > 128 ) ?  255 : 0;
+      a[i][j] = new_pixel;
+      quant_error = old_pixel - new_pixel;
+      a[ i ][j+1] = a[ i ][j+1] + quant_error * w[0];
+      a[ i ][j+2] = a[ i ][j+2] + quant_error * w[1];
+      a[i+1][j-2] = a[i+1][j-2] + quant_error * w[2];
+      a[i+1][j-1] = a[i+1][j-1] + quant_error * w[1];
+      a[i+1][ j ] = a[i+1][ j ] + quant_error * w[0];
+      a[i+1][j+1] = a[i+1][j+1] + quant_error * w[1];
+      a[i+1][j+2] = a[i+1][j+2] + quant_error * w[2];
     }
   }
 }
