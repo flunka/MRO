@@ -14,6 +14,9 @@
 #define STUCKI 5
 #define ATKINSON 6
 #define BURKES 7
+#define SIERRA_THREE 8
+#define SIERRA_TWO 9
+#define SIERRA_ONE 10
 
 
 using namespace std;
@@ -27,6 +30,9 @@ void jarvis_judice_ninke(int rows, int cols, unsigned char **a);
 void stucki(int rows, int cols, unsigned char **a);
 void atkinson(int rows, int cols, unsigned char **a);
 void burkes(int rows, int cols, unsigned char **a);
+void sierra_three(int rows, int cols, unsigned char **a);
+void sierra_two(int rows, int cols, unsigned char **a);
+void sierra_one(int rows, int cols, unsigned char **a);
 
 int main(int argc, char **argv)
 { 
@@ -39,6 +45,9 @@ int main(int argc, char **argv)
   dithering(file, STUCKI);
   dithering(file, ATKINSON);
   dithering(file, BURKES);
+  dithering(file, SIERRA_THREE);
+  dithering(file, SIERRA_TWO);
+  dithering(file, SIERRA_ONE);
     
     return 0;
 }
@@ -88,6 +97,18 @@ void dithering(string image_pgm, int type){
     case BURKES:
       burkes(rows, cols, a);
       method = "_burkes.pgm";
+      break;
+    case SIERRA_THREE:
+      sierra_three(rows, cols, a);
+      method = "_sierra_three.pgm";
+      break;
+    case SIERRA_TWO:
+      sierra_two(rows, cols, a);
+      method = "_sierra_two.pgm";
+      break;
+    case SIERRA_ONE:
+      sierra_one(rows, cols, a);
+      method = "_sierra_one.pgm";
       break;
   }
   
@@ -242,6 +263,71 @@ void burkes(int rows, int cols, unsigned char **a){
       a[i+1][ j ] = a[i+1][ j ] + quant_error * w[0];
       a[i+1][j+1] = a[i+1][j+1] + quant_error * w[1];
       a[i+1][j+2] = a[i+1][j+2] + quant_error * w[2];
+    }
+  }
+}
+
+void sierra_three(int rows, int cols, unsigned char **a){
+  int i,j;
+  int old_pixel, new_pixel;
+  int quant_error;
+  float w[] = {5.0 / 32.0, 4.0 / 32.0, 3.0 / 32.0, 2.0/32.0};
+  for (i=0; i< rows-2; i++){
+    for (j=2; j< cols-2; j++){
+      old_pixel = a[i][j];
+      new_pixel = (a[i][j] > 128 ) ?  255 : 0;
+      a[i][j] = new_pixel;
+      quant_error = old_pixel - new_pixel;
+      a[ i ][j+1] = a[ i ][j+1] + quant_error * w[0];
+      a[ i ][j+2] = a[ i ][j+2] + quant_error * w[2];
+      a[i+1][j-2] = a[i+1][j-2] + quant_error * w[3];
+      a[i+1][j-1] = a[i+1][j-1] + quant_error * w[1];
+      a[i+1][ j ] = a[i+1][ j ] + quant_error * w[0];
+      a[i+1][j+1] = a[i+1][j+1] + quant_error * w[1];
+      a[i+1][j+2] = a[i+1][j+2] + quant_error * w[3];
+      a[i+2][j-1] = a[i+2][j-1] + quant_error * w[3];
+      a[i+2][ j ] = a[i+2][ j ] + quant_error * w[2];
+      a[i+2][j+1] = a[i+2][j+1] + quant_error * w[3];
+    }
+  }
+}
+
+void sierra_two(int rows, int cols, unsigned char **a){
+  int i,j;
+  int old_pixel, new_pixel;
+  int quant_error;
+  float w[] = {4.0 / 16.0, 3.0 / 16.0, 2.0/16.0, 1.0 / 16.0};
+  for (i=0; i< rows-1; i++){
+    for (j=2; j< cols-2; j++){
+      old_pixel = a[i][j];
+      new_pixel = (a[i][j] > 128 ) ?  255 : 0;
+      a[i][j] = new_pixel;
+      quant_error = old_pixel - new_pixel;
+      a[ i ][j+1] = a[ i ][j+1] + quant_error * w[0];
+      a[ i ][j+2] = a[ i ][j+2] + quant_error * w[1];
+      a[i+1][j-2] = a[i+1][j-2] + quant_error * w[3];
+      a[i+1][j-1] = a[i+1][j-1] + quant_error * w[2];
+      a[i+1][ j ] = a[i+1][ j ] + quant_error * w[1];
+      a[i+1][j+1] = a[i+1][j+1] + quant_error * w[2];
+      a[i+1][j+2] = a[i+1][j+2] + quant_error * w[3];
+    }
+  }
+}
+
+void sierra_one(int rows, int cols, unsigned char **a){
+  int i,j;
+  int old_pixel, new_pixel;
+  int quant_error;
+  float w[] = {2.0 / 4.0, 1.0 / 4.0};
+  for (i=0; i< rows-1; i++){
+    for (j=1; j< cols-1; j++){
+      old_pixel = a[i][j];
+      new_pixel = (a[i][j] > 128 ) ?  255 : 0;
+      a[i][j] = new_pixel;
+      quant_error = old_pixel - new_pixel;
+      a[ i ][j+1] = a[ i ][j+1] + quant_error * w[0];
+      a[i+1][j-1] = a[i+1][j-1] + quant_error * w[1];
+      a[i+1][ j ] = a[i+1][ j ] + quant_error * w[1];
     }
   }
 }
