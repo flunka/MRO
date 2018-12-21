@@ -145,6 +145,16 @@ void floyd_steinberg(int rows, int cols, unsigned char **a){
 
     }
   }
+  //boundary condidtions
+  //last row
+  for(j=0; j<cols;j++){
+    a[rows-1][j] = (a[rows-1][j] > 128 ) ?  255 : 0;
+  }
+  //first and last columns
+  for(i=0;i<rows;i++){
+    a[i][0] = (a[i][0] > 128 ) ?  255 : 0;
+    a[i][cols-1] = (a[i][cols-1] > 128 ) ?  255 : 0;
+  }
 }
 
 void threshold(int rows, int cols, unsigned char **a, unsigned char threshold){
@@ -189,9 +199,20 @@ void jarvis_judice_ninke(int rows, int cols, unsigned char **a){
       a[i+2][ j ] = a[i+2][ j ] + quant_error * w[1];
       a[i+2][j+1] = a[i+2][j+1] + quant_error * w[2];
       a[i+2][j+2] = a[i+2][j+2] + quant_error * w[3];
-      
-
     }
+  }
+  //boundary condidtions
+  //last two rows
+  for(j=0; j<cols;j++){
+    a[rows-2][j] = (a[rows-2][j] > 128 ) ?  255 : 0;
+    a[rows-1][j] = (a[rows-1][j] > 128 ) ?  255 : 0;
+  }
+  //first, second, last and one before last columns
+  for(i=0;i<rows;i++){
+    a[i][0] = (a[i][0] > 128 ) ?  255 : 0;
+    a[i][1] = (a[i][1] > 128 ) ?  255 : 0;
+    a[i][cols-2] = (a[i][cols-2] > 128 ) ?  255 : 0;
+    a[i][cols-1] = (a[i][cols-1] > 128 ) ?  255 : 0;
   }
 }
 
@@ -218,9 +239,20 @@ void stucki(int rows, int cols, unsigned char **a){
       a[i+2][ j ] = a[i+2][ j ] + quant_error * w[1];
       a[i+2][j+1] = a[i+2][j+1] + quant_error * w[2];
       a[i+2][j+2] = a[i+2][j+2] + quant_error * w[3];
-      
-
     }
+  }
+  //boundary condidtions
+  //last two rows
+  for(j=0; j<cols;j++){
+    a[rows-2][j] = (a[rows-2][j] > 128 ) ?  255 : 0;
+    a[rows-1][j] = (a[rows-1][j] > 128 ) ?  255 : 0;
+  }
+  //first, second, last and one before last columns
+  for(i=0;i<rows;i++){
+    a[i][0] = (a[i][0] > 128 ) ?  255 : 0;
+    a[i][1] = (a[i][1] > 128 ) ?  255 : 0;
+    a[i][cols-2] = (a[i][cols-2] > 128 ) ?  255 : 0;
+    a[i][cols-1] = (a[i][cols-1] > 128 ) ?  255 : 0;
   }
 }
 
@@ -243,6 +275,18 @@ void atkinson(int rows, int cols, unsigned char **a){
       a[i+2][ j ] = a[i+2][ j ] + quant_error * w;
     }
   }
+  //boundary condidtions
+  //last two rows
+  for(j=0; j<cols;j++){
+    a[rows-2][j] = (a[rows-2][j] > 128 ) ?  255 : 0;
+    a[rows-1][j] = (a[rows-1][j] > 128 ) ?  255 : 0;
+  }
+  //first, last and one before last columns
+  for(i=0;i<rows;i++){
+    a[i][0] = (a[i][0] > 128 ) ?  255 : 0;
+    a[i][cols-2] = (a[i][cols-2] > 128 ) ?  255 : 0;
+    a[i][cols-1] = (a[i][cols-1] > 128 ) ?  255 : 0;
+  }
 }
 
 void burkes(int rows, int cols, unsigned char **a){
@@ -264,6 +308,18 @@ void burkes(int rows, int cols, unsigned char **a){
       a[i+1][j+1] = a[i+1][j+1] + quant_error * w[1];
       a[i+1][j+2] = a[i+1][j+2] + quant_error * w[2];
     }
+  }
+  //boundary condidtions
+  //last row
+  for(j=0; j<cols;j++){
+    a[rows-1][j] = (a[rows-1][j] > 128 ) ?  255 : 0;
+  }
+  //first, second, last and one before last columns
+  for(i=0;i<rows;i++){
+    a[i][0] = (a[i][0] > 128 ) ?  255 : 0;
+    a[i][1] = (a[i][1] > 128 ) ?  255 : 0;
+    a[i][cols-2] = (a[i][cols-2] > 128 ) ?  255 : 0;
+    a[i][cols-1] = (a[i][cols-1] > 128 ) ?  255 : 0;
   }
 }
 
@@ -290,6 +346,19 @@ void sierra_three(int rows, int cols, unsigned char **a){
       a[i+2][j+1] = a[i+2][j+1] + quant_error * w[3];
     }
   }
+  //boundary condidtions
+  //last two rows
+  for(j=0; j<cols;j++){
+    a[rows-2][j] = (a[rows-2][j] > 128 ) ?  255 : 0;
+    a[rows-1][j] = (a[rows-1][j] > 128 ) ?  255 : 0;
+  }
+  //first, second, last and one before last columns
+  for(i=0;i<rows;i++){
+    a[i][0] = (a[i][0] > 128 ) ?  255 : 0;
+    a[i][1] = (a[i][1] > 128 ) ?  255 : 0;
+    a[i][cols-2] = (a[i][cols-2] > 128 ) ?  255 : 0;
+    a[i][cols-1] = (a[i][cols-1] > 128 ) ?  255 : 0;
+  }
 }
 
 void sierra_two(int rows, int cols, unsigned char **a){
@@ -312,6 +381,18 @@ void sierra_two(int rows, int cols, unsigned char **a){
       a[i+1][j+2] = a[i+1][j+2] + quant_error * w[3];
     }
   }
+  //boundary condidtions
+  //last two rows
+  for(j=0; j<cols;j++){
+    a[rows-1][j] = (a[rows-1][j] > 128 ) ?  255 : 0;
+  }
+  //first, second, last and one before last columns
+  for(i=0;i<rows;i++){
+    a[i][0] = (a[i][0] > 128 ) ?  255 : 0;
+    a[i][1] = (a[i][1] > 128 ) ?  255 : 0;
+    a[i][cols-2] = (a[i][cols-2] > 128 ) ?  255 : 0;
+    a[i][cols-1] = (a[i][cols-1] > 128 ) ?  255 : 0;
+  }
 }
 
 void sierra_one(int rows, int cols, unsigned char **a){
@@ -329,5 +410,16 @@ void sierra_one(int rows, int cols, unsigned char **a){
       a[i+1][j-1] = a[i+1][j-1] + quant_error * w[1];
       a[i+1][ j ] = a[i+1][ j ] + quant_error * w[1];
     }
+  }
+  //boundary condidtions
+  //last two rows
+  for(j=0; j<cols;j++){
+    a[rows-2][j] = (a[rows-2][j] > 128 ) ?  255 : 0;
+    a[rows-1][j] = (a[rows-1][j] > 128 ) ?  255 : 0;
+  }
+  //first, second, last and one before last columns
+  for(i=0;i<rows;i++){
+    a[i][0] = (a[i][0] > 128 ) ?  255 : 0;
+    a[i][cols-1] = (a[i][cols-1] > 128 ) ?  255 : 0;
   }
 }
